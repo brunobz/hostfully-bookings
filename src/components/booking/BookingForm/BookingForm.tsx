@@ -1,37 +1,17 @@
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import type { Resolver } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Booking } from "../../types/bookings";
-
-import { Label } from "../ui/Label";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
-import { DateRangePicker } from "../ui/DateRangerPicker";
-import { PropertySelector } from "../PropertySelector/PropertySelector";
+import type { Booking } from "@/types/bookings";
 import { mockProperties } from "@/data/properties";
+import { bookingSchema, type BookingFormData } from "@/schemas/bookingSchema";
 
-const bookingSchema = z.object({
-  guestName: z.string().min(1, "Guest name is required"),
-  propertyId: z.string().min(1, "Property is required"),
-  dateRange: z
-    .object({
-      from: z.date().refine((d) => !!d, { message: "Start date is required" }),
-      to: z.date().refine((d) => !!d, { message: "End date is required" }),
-    })
-    .refine((r) => r.from <= r.to, {
-      message: "Start date cannot be after end date",
-      path: ["from"],
-    }),
-  price: z.coerce
-    .number()
-    .positive("Price must be greater than 0")
-    .refine((n) => !isNaN(n), { message: "Price must be a number" }),
-});
-
-type BookingFormData = z.infer<typeof bookingSchema>;
-
+import { PropertySelector } from "@/components/property/PropertySelector/PropertySelector";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
+import { DateRangePicker } from "@/components/ui/DateRangerPicker";
+import { CurrencyInput } from "@/components/ui/CurrencyInput";
 interface BookingFormProps {
   initialData?: Booking;
   onSubmit: (data: Booking) => void;
@@ -57,7 +37,7 @@ export function BookingForm({
     resolver,
     defaultValues: {
       guestName: "",
-      propertyId: "",
+      property: null,
       dateRange: { from: undefined, to: undefined },
       price: 0,
     },
@@ -67,7 +47,7 @@ export function BookingForm({
     if (initialData) {
       reset({
         guestName: initialData.guestName,
-        propertyId: initialData.propertyId,
+        property: initialData.property,
         dateRange: {
           from: initialData.dateRange?.from,
           to: initialData.dateRange?.to,
@@ -77,7 +57,7 @@ export function BookingForm({
     } else {
       reset({
         guestName: "",
-        propertyId: "",
+        property: undefined,
         dateRange: { from: undefined, to: undefined },
         price: 0,
       });
@@ -87,14 +67,16 @@ export function BookingForm({
   return (
     <form
       onSubmit={handleSubmit((data) => {
+        if (!data.property) return;
+
         const booking: Booking = {
           id: initialData?.id ?? crypto.randomUUID(),
           guestName: data.guestName,
-          propertyId: data.propertyId,
+          property: data.property,
           price: data.price,
           dateRange: {
-            from: data.dateRange.from,
-            to: data.dateRange.to,
+            from: data.dateRange.from!,
+            to: data.dateRange.to!,
           },
         };
         onSubmit(booking);
@@ -122,17 +104,17 @@ export function BookingForm({
         )}
       </div>
 
-      {/* Property */}
-      <Controller<BookingFormData, "propertyId">
+      {/* Property Selector */}
+      <Controller<BookingFormData, "property">
         control={control}
-        name="propertyId"
+        name="property"
         render={({ field }) => (
           <PropertySelector
             label="Property"
             properties={mockProperties}
             value={field.value}
-            onChange={(value) => field.onChange(value)}
-            error={errors.propertyId?.message}
+            onChange={field.onChange}
+            error={errors.property?.message}
           />
         )}
       />
@@ -140,15 +122,19 @@ export function BookingForm({
       {/* Price */}
       <div className="flex flex-col">
         <Label id="price" label="Price (USD)" />
-        <Input
-          id="price"
-          type="number"
-          step="0.01"
-          min="0"
-          {...register("price", { valueAsNumber: true })}
-          aria-invalid={!!errors.price}
-          aria-describedby="price-error"
-          error={!!errors.price?.message}
+        <Controller<BookingFormData, "price">
+          control={control}
+          name="price"
+          render={({ field }) => (
+            <CurrencyInput
+              id="price"
+              value={field.value}
+              onChange={field.onChange}
+              aria-invalid={!!errors.price}
+              aria-describedby="price-error"
+              error={!!errors.price?.message}
+            />
+          )}
         />
         {errors.price?.message && (
           <span id="price-error" className="text-sm text-red-600 mt-1">
@@ -166,18 +152,14 @@ export function BookingForm({
             <DateRangePicker
               label="Booking Dates"
               value={field.value}
-              onChange={(v) => field.onChange(v)}
-              error={errors.dateRange?.message}
+              onChange={field.onChange}
+              error={!!errors.dateRange?.from || !!errors.dateRange?.to}
             />
           )}
         />
-        {errors.dateRange?.message && (
-          <span className="text-sm text-red-600 mt-1">
-            {errors.dateRange.message}
-          </span>
-        )}
       </div>
 
+      {/* Buttons */}
       <div className="flex justify-end gap-2">
         {onCancel && (
           <Button

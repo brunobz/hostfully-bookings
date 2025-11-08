@@ -1,6 +1,8 @@
+import type { Property } from "./properties";
+
 export interface Booking {
   id: string;
-  propertyId: string;
+  property: Property | null;
   guestName: string;
   dateRange: {
     from: Date;

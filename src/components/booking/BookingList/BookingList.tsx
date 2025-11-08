@@ -1,5 +1,5 @@
 import React from "react";
-import { BookingCard } from "@/components/BookingCard/BookingCard";
+import { BookingCard } from "@/components/booking/BookingCard/BookingCard";
 import type { Booking } from "@/types/bookings";
 import { cn } from "@/libs/utils";
 

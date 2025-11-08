@@ -10,7 +10,7 @@ interface Props {
   label?: string;
   value?: DateRange | PartialDateRange;
   onChange: (range: DateRange | undefined) => void;
-  error?: string | undefined;
+  error?: boolean;
 }
 
 export function DateRangePicker({ label, value, onChange, error }: Props) {
@@ -77,7 +77,9 @@ export function DateRangePicker({ label, value, onChange, error }: Props) {
         </div>
       )}
 
-      {error && <span className="text-sm text-red-600 mt-1">{error}</span>}
+      {error && (
+        <span className="text-sm text-red-600 mt-1">{"Date is require"}</span>
+      )}
     </div>
   );
 }

@@ -1,18 +1,11 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/libs/utils";
+import type { Booking } from "@/types/bookings";
 
 export interface DateRange {
   from: Date;
   to: Date;
-}
-
-export interface Booking {
-  id: string;
-  guestName: string;
-  propertyId: string;
-  dateRange: DateRange;
-  price: number;
 }
 
 interface BookingCardProps {
@@ -28,7 +21,7 @@ export const BookingCard = ({
   onDelete,
   className,
 }: BookingCardProps) => {
-  const { id, guestName, propertyId, dateRange, price } = booking;
+  const { id, guestName, property, dateRange, price } = booking;
 
   return (
     <article
@@ -41,7 +34,7 @@ export const BookingCard = ({
             <span className="text-lg font-semibold text-gray-900">
               {guestName}
             </span>
-            <span className="text-sm text-gray-500">#{propertyId}</span>
+            <span className="text-sm text-gray-500">#{property?.name}</span>
           </CardTitle>
         </CardHeader>
 
