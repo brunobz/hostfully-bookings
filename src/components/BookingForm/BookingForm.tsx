@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import type { Resolver } from "react-hook-form";
 import { z } from "zod";
@@ -8,6 +9,8 @@ import { Label } from "../ui/Label";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { DateRangePicker } from "../ui/DateRangerPicker";
+import { PropertySelector } from "../PropertySelector/PropertySelector";
+import { mockProperties } from "@/data/properties";
 
 const bookingSchema = z.object({
   guestName: z.string().min(1, "Guest name is required"),
@@ -52,23 +55,34 @@ export function BookingForm({
     reset,
   } = useForm<BookingFormData>({
     resolver,
-    defaultValues: initialData
-      ? {
-          guestName: initialData.guestName,
-          propertyId: initialData.propertyId,
-          dateRange: {
-            from: initialData.dateRange?.from,
-            to: initialData.dateRange?.to,
-          },
-          price: initialData.price,
-        }
-      : {
-          guestName: "",
-          propertyId: "",
-          dateRange: { from: undefined, to: undefined },
-          price: 0,
-        },
+    defaultValues: {
+      guestName: "",
+      propertyId: "",
+      dateRange: { from: undefined, to: undefined },
+      price: 0,
+    },
   });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        guestName: initialData.guestName,
+        propertyId: initialData.propertyId,
+        dateRange: {
+          from: initialData.dateRange?.from,
+          to: initialData.dateRange?.to,
+        },
+        price: initialData.price,
+      });
+    } else {
+      reset({
+        guestName: "",
+        propertyId: "",
+        dateRange: { from: undefined, to: undefined },
+        price: 0,
+      });
+    }
+  }, [initialData, reset]);
 
   return (
     <form
@@ -92,34 +106,56 @@ export function BookingForm({
       <h2 className="text-xl font-semibold text-[#503E9D]">Booking Details</h2>
 
       {/* Guest Name */}
-      <Label id="guestName" label="Guest Name" />
-      <Input
-        id="guestName"
-        {...register("guestName")}
-        aria-invalid={!!errors.guestName}
-        aria-describedby="guestName-error"
-        error={!!errors.guestName?.message}
-      />
-      {errors.guestName?.message && (
-        <span id="guestName-error" className="text-sm text-red-600 mt-1">
-          {errors.guestName.message}
-        </span>
-      )}
+      <div className="flex flex-col">
+        <Label id="guestName" label="Guest Name" />
+        <Input
+          id="guestName"
+          {...register("guestName")}
+          aria-invalid={!!errors.guestName}
+          aria-describedby="guestName-error"
+          error={!!errors.guestName?.message}
+        />
+        {errors.guestName?.message && (
+          <span id="guestName-error" className="text-sm text-red-600 mt-1">
+            {errors.guestName.message}
+          </span>
+        )}
+      </div>
 
       {/* Property */}
-      <Label id="propertyId" label="Property ID" />
-      <Input
-        id="propertyId"
-        {...register("propertyId")}
-        aria-invalid={!!errors.propertyId}
-        aria-describedby="propertyId-error"
-        error={!!errors.propertyId?.message}
+      <Controller<BookingFormData, "propertyId">
+        control={control}
+        name="propertyId"
+        render={({ field }) => (
+          <PropertySelector
+            label="Property"
+            properties={mockProperties}
+            value={field.value}
+            onChange={(value) => field.onChange(value)}
+            error={errors.propertyId?.message}
+          />
+        )}
       />
-      {errors.propertyId?.message && (
-        <span id="propertyId-error" className="text-sm text-red-600 mt-1">
-          {errors.propertyId.message}
-        </span>
-      )}
+
+      {/* Price */}
+      <div className="flex flex-col">
+        <Label id="price" label="Price (USD)" />
+        <Input
+          id="price"
+          type="number"
+          step="0.01"
+          min="0"
+          {...register("price", { valueAsNumber: true })}
+          aria-invalid={!!errors.price}
+          aria-describedby="price-error"
+          error={!!errors.price?.message}
+        />
+        {errors.price?.message && (
+          <span id="price-error" className="text-sm text-red-600 mt-1">
+            {errors.price.message}
+          </span>
+        )}
+      </div>
 
       {/* Date Range */}
       <div>
@@ -142,30 +178,20 @@ export function BookingForm({
         )}
       </div>
 
-      {/* Price */}
-      <Label id="price" label="Price (USD)" />
-      <Input
-        id="price"
-        type="number"
-        step="0.01"
-        {...register("price", { valueAsNumber: true })}
-        aria-invalid={!!errors.price}
-        aria-describedby="price-error"
-        error={!!errors.price?.message}
-      />
-      {errors.price?.message && (
-        <span id="price-error" className="text-sm text-red-600 mt-1">
-          {errors.price.message}
-        </span>
-      )}
-
       <div className="flex justify-end gap-2">
         {onCancel && (
-          <Button type="button" variant="secondary" onClick={onCancel}>
+          <Button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 rounded-md border border-[#503E9D] text-[#503E9D] bg-white hover:bg-[#f4f1fb] focus:ring-2 focus:ring-[#503E9D] focus:ring-offset-2 transition-all cursor-pointer"
+          >
             Cancel
           </Button>
         )}
-        <Button type="submit" variant="primary">
+        <Button
+          type="submit"
+          className="px-4 py-2 rounded-md font-medium bg-[#503E9D] text-white hover:bg-[#3E2E84] focus:ring-2 focus:ring-[#F4B93E] focus:ring-offset-2 transition-all cursor-pointer"
+        >
           {initialData ? "Update Booking" : "Create Booking"}
         </Button>
       </div>

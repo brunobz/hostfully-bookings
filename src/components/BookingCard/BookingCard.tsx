@@ -67,6 +67,7 @@ export const BookingCard = ({
                   variant="secondary"
                   aria-label={`Edit booking for ${guestName}`}
                   onClick={() => onEdit(id)}
+                  className="cursor-pointer"
                 >
                   Edit
                 </Button>
@@ -76,6 +77,7 @@ export const BookingCard = ({
                   variant="primary"
                   aria-label={`Delete booking for ${guestName}`}
                   onClick={() => onDelete(id)}
+                  className="cursor-pointer"
                 >
                   Delete
                 </Button>
