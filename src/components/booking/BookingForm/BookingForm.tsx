@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { DateRangePicker } from "@/components/ui/DateRangerPicker";
 import { CurrencyInput } from "@/components/ui/CurrencyInput";
+import { defaultValues } from "./defaultValues";
 interface BookingFormProps {
   initialData?: Booking;
   onSubmit: (data: Booking) => void;
@@ -55,12 +56,7 @@ export function BookingForm({
         price: initialData.price,
       });
     } else {
-      reset({
-        guestName: "",
-        property: undefined,
-        dateRange: { from: undefined, to: undefined },
-        price: 0,
-      });
+      reset(defaultValues);
     }
   }, [initialData, reset]);
 

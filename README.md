@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+# Booking Manager 🏨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and intuitive booking management application built with **React**, **TypeScript**, and **Vite**.  
+It allows users to create, edit, and manage property bookings, featuring a clean UI, validation, and reactive state management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Technologies Used
 
-## React Compiler
+| Category               | Libraries / Tools                                                                                                      |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Frontend Framework** | [React](https://reactjs.org/)                                                                                          |
+| **Language**           | [TypeScript](https://www.typescriptlang.org/)                                                                          |
+| **Styling**            | [Tailwind CSS](https://tailwindcss.com/)                                                                               |
+| **Form Handling**      | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)                                              |
+| **State Management**   | [Zustand](https://zustand-demo.pmnd.rs/)                                                                               |
+| **Build Tool**         | [Vite](https://vitejs.dev/)                                                                                            |
+| **Testing**            | [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ⚙️ Installation & Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Clone the repository**
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+   ```bash
+   git clone https://github.com/brunobz/hostfully-bookings.git
+   cd hostfully-bookings
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+2. **Install dependencies**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+   The app will be available at [http://localhost:5173](http://localhost:5173).
+
+4. **Build for production**
+
+   ```bash
+   npm run build
+   ```
+
+5. **Preview production build**
+
+   ```bash
+   npm run preview
+   ```
+
+---
+
+## 🧪 Running Tests
+
+This project includes unit and integration tests using **Vitest** and **React Testing Library**.
+
+```bash
+npm run test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🧩 Features
+
+- 🏠 Manage property bookings easily
+- ✏️ Create, edit, and delete bookings
+- ⚡ Instant form validation with **Zod**
+- 💾 Global state management with **Zustand**
+- 🎨 Clean and responsive UI with **Tailwind CSS**
+- 🧭 Type-safe architecture with **TypeScript**
+- 🧪 Comprehensive test coverage using **Vitest + RTL**
+
+---
+
+## 🧑‍💻 Author
+
+**Developed by:** [Bruno Bianchini Zandavalle]  
+**GitHub:** [https://github.com/brunobz](https://github.com/brunobz)  
+**LinkedIn:** [https://www.linkedin.com/in/bruno-bianchini-zandavalle](https://www.linkedin.com/in/bruno-bianchini-zandavalle)
+
+---
