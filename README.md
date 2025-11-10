@@ -66,8 +66,6 @@ npm run test
 
 ---
 
----
-
 ## 🧩 Features
 
 - 🏠 Manage property bookings easily
@@ -82,7 +80,7 @@ npm run test
 
 ## 🧑‍💻 Author
 
-**Developed by:** [Bruno Bianchini Zandavalle]  
+**Developed by:** Bruno Bianchini Zandavalle  
 **GitHub:** [https://github.com/brunobz](https://github.com/brunobz)  
 **LinkedIn:** [https://www.linkedin.com/in/bruno-bianchini-zandavalle](https://www.linkedin.com/in/bruno-bianchini-zandavalle)
 
