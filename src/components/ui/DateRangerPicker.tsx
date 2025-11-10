@@ -41,7 +41,10 @@ export function DateRangePicker({ label, value, onChange, error }: Props) {
   return (
     <div className="flex flex-col relative" ref={ref}>
       {label && (
-        <label className="text-sm font-medium text-gray-700 mb-1">
+        <label
+          id="booking-dates-label"
+          className="text-sm font-medium text-gray-700 mb-1"
+        >
           {label}
         </label>
       )}
@@ -53,7 +56,7 @@ export function DateRangePicker({ label, value, onChange, error }: Props) {
             ? "border-red-400 focus:ring-red-300"
             : "border-gray-300 focus:ring-[#503E9D]"
         }`}
-        aria-label="Open date picker"
+        aria-labelledby="booking-dates-label"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {formatted}

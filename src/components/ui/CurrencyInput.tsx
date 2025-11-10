@@ -19,7 +19,6 @@ export function CurrencyInput({
     value ? value.toString() : ""
   );
 
-  // Atualiza o display quando o value externo mudar
   useEffect(() => {
     setDisplayValue(
       value !== undefined && value !== null ? value.toString() : ""
@@ -27,7 +26,6 @@ export function CurrencyInput({
   }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Permite apenas números e ponto
     const val = e.target.value.replace(/[^0-9.]/g, "");
     setDisplayValue(val);
 
@@ -40,7 +38,6 @@ export function CurrencyInput({
   };
 
   const handleBlur = () => {
-    // Formata para USD ao sair do input
     if (!displayValue) return;
     const numberVal = parseFloat(displayValue);
     if (!isNaN(numberVal)) {

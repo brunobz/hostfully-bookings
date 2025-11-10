@@ -18,11 +18,15 @@ export function PropertySelector({
   return (
     <div className="flex flex-col">
       {label && (
-        <label className="text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor={"Property"}
+          className="text-sm font-medium text-gray-700 mb-1"
+        >
           {label}
         </label>
       )}
       <select
+        id="Property"
         value={value?.id ?? ""}
         onChange={(e) => {
           const selected = properties.find(

@@ -1,12 +1,8 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/libs/utils";
+import { format } from "date-fns";
 import type { Booking } from "@/types/bookings";
-
-export interface DateRange {
-  from: Date;
-  to: Date;
-}
 
 interface BookingCardProps {
   booking: Booking;
@@ -22,6 +18,12 @@ export const BookingCard = ({
   className,
 }: BookingCardProps) => {
   const { id, guestName, property, dateRange, price } = booking;
+
+  const formatDate = (date?: Date) => {
+    if (!date) return "—";
+    const d = typeof date === "string" ? new Date(date) : date;
+    return format(d, "MM/dd/yyyy");
+  };
 
   return (
     <article
@@ -41,11 +43,7 @@ export const BookingCard = ({
         <CardContent className="flex flex-col gap-2 text-sm text-gray-700">
           <div>
             <span className="font-medium">Stay:</span>{" "}
-            {dateRange?.from
-              ? new Date(dateRange.from).toLocaleDateString()
-              : "—"}{" "}
-            –{" "}
-            {dateRange?.to ? new Date(dateRange.to).toLocaleDateString() : "—"}
+            {formatDate(dateRange?.from)} – {formatDate(dateRange?.to)}
           </div>
 
           <div>

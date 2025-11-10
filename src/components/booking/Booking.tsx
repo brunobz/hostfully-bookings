@@ -5,15 +5,18 @@ import { useBookingStore } from "@/stores/bookingStore";
 import type { Booking as TBooking } from "@/types/bookings";
 import { sampleBookings } from "@/data/sampleBookings";
 import { Modal } from "../ui/Modal";
+import { useConfirmationModal } from "@/hooks/useConfirmationModal";
 
 export const Booking = () => {
   const { bookings, addBooking, updateBooking, deleteBooking, setBookings } =
     useBookingStore();
 
+  const { data, onCancel, onConfirm, onDelete } =
+    useConfirmationModal(deleteBooking);
+
   const [editing, setEditing] = useState<TBooking | undefined>(undefined);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [bookingToDelete, setBookingToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     setBookings(sampleBookings);
@@ -61,15 +64,8 @@ export const Booking = () => {
   };
 
   const handleDelete = (id: string) => {
-    setBookingToDelete(id);
+    onDelete(id);
   };
-
-  const confirmDelete = () => {
-    if (bookingToDelete) deleteBooking(bookingToDelete);
-    setBookingToDelete(null);
-  };
-
-  const cancelDelete = () => setBookingToDelete(null);
 
   const handleCancel = () => {
     setEditing(undefined);
@@ -132,11 +128,11 @@ export const Booking = () => {
         />
 
         <Modal
-          isOpen={!!bookingToDelete}
+          isOpen={!!data}
           title="Confirm Deletion"
           message="Are you sure you want to delete this booking? This action cannot be undone."
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
+          onConfirm={onConfirm}
+          onCancel={onCancel}
         />
       </section>
     </>
